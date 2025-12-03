@@ -1,10 +1,23 @@
-﻿namespace GalacticQuest
+﻿using GalacticQuest.DataModels;
+
+namespace GalacticQuest
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, Galactic Quest!");
+
+            Player player = new Player(40 , 20, new List<(string, int)> (), 42);
+            //Console.WriteLine("Hp: " + player.Hp);
+            player.ShowDetails();
+            player.AddItem(("Laser Gun", 1));
+            player.ShowDetails();
+            player.RemoveItem("Laser Gun");
+            player.AddItem(("Health Potion", 3));
+            player.ShowDetails();
+            //player.UpdateHp(-100);
+            //player.ShowDetails();
 
             OpenMainMenu();
         }
@@ -19,25 +32,30 @@
                 Console.WriteLine("Select your option and press Enter: \n 1.Travel \n 2.Journal \n 3.Exit \n");
                 int.TryParse(Console.ReadLine(), out int readOption);
 
-
-                switch (readOption)
+                try
                 {
-                    case (int)GameOptions.Monsters:
-                        OpenTravelMenu();
-                        break;
+                    switch (readOption)
+                    {
+                        case (int)GameOptions.Monsters:
+                            OpenTravelMenu();
+                            break;
 
-                    case (int)GameOptions.Journal:
-                        OpenJournalMenu();
-                        break;
+                        case (int)GameOptions.Journal:
+                            OpenJournalMenu();
+                            break;
 
-                    case (int)GameOptions.Exit:
-                        isAppRunning = false;
-                        break;
+                        case (int)GameOptions.Exit:
+                            isAppRunning = false;
+                            break;
 
-                    default:
-                        Console.WriteLine("-_-' Invalid Option");
-                        break;
+                        default:
+                            throw new Exception();
 
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("There was an error!");
                 }
             }
         }
@@ -238,5 +256,6 @@
                 }
             }
         }
+
     }
 }
