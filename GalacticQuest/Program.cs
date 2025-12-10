@@ -1,4 +1,5 @@
-﻿using GalacticQuest.Monsters;
+﻿using GalacticQuest.Items;
+using GalacticQuest.Monsters;
 
 namespace GalacticQuest
 {
@@ -8,9 +9,19 @@ namespace GalacticQuest
         {
             Console.WriteLine("Hello, Galactic Quest!");
 
-            CreateAndDisplayMonsters();
+            //CreateAndDisplayMonsters();
 
-            CreateAndDisplayPlayerStats();
+            //CreateAndDisplayPlayerStats();
+
+            Item excalibur = new Excalibur();
+            Item amulet = new ShadowAmulet();
+
+            Console.WriteLine($"Excalibur: {excalibur.Attack} ATT, {excalibur.Health} HP");
+            excalibur.SpecialPower();
+
+            Console.WriteLine($"Shadow Amulet: {amulet.Attack} ATT, {amulet.Health} HP");
+            amulet.SpecialPower();
+
 
             OpenMainMenu();
         }
@@ -142,10 +153,8 @@ namespace GalacticQuest
             switch (readOption)
             {
                 case 1:
-                    List<string> monstersWithNames = CreateMonstersWithNames();
-                    Dictionary<string, int> monstersWithHp = CreateMonstersWith("hp", monstersWithNames);
-                    Dictionary<string, int> monstersWithAttack = CreateMonstersWith("attack", monstersWithNames);
-                    ShowMonsters(monstersWithHp, monstersWithAttack);
+                    List<Monster> monsters = CreateMonsterList();
+                    ShowMonstersFromClasses(monsters);
                     break;
 
                 case 2:
@@ -164,131 +173,199 @@ namespace GalacticQuest
                     break;
             }
         }
-
-        internal static List<string> CreateMonstersWithNames()
+        internal static List<Monster> CreateMonsterList()
         {
-            List<string> monstersList = new List<string>
+            return new List<Monster>()
             {
-                "Glorbazorg",
-                "Xenotutzi",
-                "Ignifax",
-                "Kryostasis",
-                "Nighthorn",
-                "Leviathan-Maw",
-                "Hydro-King Aqueron",
-                "Stonemouth"
+                new Glorbazorg(),
+                new Xenotutzi(),
+                new Ignifax(),
+                new Stonemouth()
             };
-            return monstersList;
         }
-
-        internal static Dictionary<string, int> CreateMonstersWith(string hpOrAttack, List<string> monstersList)
+        internal static void ShowMonstersFromClasses(List<Monster> monsters)
         {
-            Dictionary<string, int> monstersDictionary = new Dictionary<string, int>();
-            Random randomGenerator = new Random();
+            Console.WriteLine("The monsters are:\n");
 
-            for (int i = 0; i < monstersList.Count; ++i)
+            for (int i = 0; i < monsters.Count; i++)
             {
-                string monsterKey = monstersList[i];
-                int monsterValue = 0; // default value
-
-                if (hpOrAttack == "hp")
-                {
-                    monsterValue = randomGenerator.Next(10, 100);
-                }
-                else if (hpOrAttack == "attack")
-                {
-                    monsterValue = randomGenerator.Next(1, 20);
-                }
-
-                monstersDictionary.Add(monsterKey, monsterValue);
+                Console.WriteLine($"{monsters[i].Name} - {monsters[i].Hp} HP - {monsters[i].Attack} ATT");
             }
 
-            return monstersDictionary;
-        }
 
-        internal static void ShowMonsters(Dictionary<string, int> monstersWithHp, Dictionary<string, int> monstersWithAttack)
-        {
-            Console.WriteLine("The monsters are : ");
+            Console.WriteLine("\nPress 1 to go back or 2 to filter monsters by name:");
+            int.TryParse(Console.ReadLine(), out int option);
 
-            for (int index = 0; index < monstersWithHp.Count; ++index)
-            {
-                Console.WriteLine(monstersWithHp.Keys.ElementAt(index) + " - " + monstersWithHp.Values.ElementAt(index) + " HP");
-            }
-            Console.Write("\n");
-
-            for (int index = 0; index < monstersWithAttack.Count; ++index)
-            {
-                Console.WriteLine(monstersWithAttack.Keys.ElementAt(index) + " - " + monstersWithAttack.Values.ElementAt(index) + " ATT");
-            }
-            Console.Write("\n");
-
-            ShowMonstersOptions(monstersWithHp);
-        }
-
-        internal static void ShowMonstersOptions(Dictionary<string, int> monstersWithHp)
-        {
-            Console.WriteLine("Press 1 to go back or 2 to filter monsters based on name");
-
-            int.TryParse(Console.ReadLine(), out int userOption);
-            switch (userOption)
+            switch (option)
             {
                 case 1:
-                    break;
+                    return;
 
                 case 2:
-                    FilterMonstersByName(monstersWithHp);
+                    FilterMonsterClasses(monsters);
                     break;
 
                 default:
-                    Console.WriteLine("Invalid Option. Please try a valid option.");
+                    Console.WriteLine("Invalid option.");
                     break;
             }
         }
 
-        internal static void FilterMonstersByName(Dictionary<string, int> monstersWithHp)
+        //functions using dictionaries and lists
+        //internal static List<string> CreateMonstersWithNames()
+        //{
+        //    List<string> monstersList = new List<string>
+        //    {
+        //        "Glorbazorg",
+        //        "Xenotutzi",
+        //        "Ignifax",
+        //        "Kryostasis",
+        //        "Nighthorn",
+        //        "Leviathan-Maw",
+        //        "Hydro-King Aqueron",
+        //        "Stonemouth"
+        //    };
+        //    return monstersList;
+        //}
+
+        //internal static Dictionary<string, int> CreateMonstersWith(string hpOrAttack, List<string> monstersList)
+        //{
+        //    Dictionary<string, int> monstersDictionary = new Dictionary<string, int>();
+        //    Random randomGenerator = new Random();
+
+        //    for (int i = 0; i < monstersList.Count; ++i)
+        //    {
+        //        string monsterKey = monstersList[i];
+        //        int monsterValue = 0; // default value
+
+        //        if (hpOrAttack == "hp")
+        //        {
+        //            monsterValue = randomGenerator.Next(10, 100);
+        //        }
+        //        else if (hpOrAttack == "attack")
+        //        {
+        //            monsterValue = randomGenerator.Next(1, 20);
+        //        }
+
+        //        monstersDictionary.Add(monsterKey, monsterValue);
+        //    }
+
+        //    return monstersDictionary;
+        //}
+
+        //internal static void ShowMonsters(Dictionary<string, int> monstersWithHp, Dictionary<string, int> monstersWithAttack)
+        //{
+        //    Console.WriteLine("The monsters are : ");
+
+        //    for (int index = 0; index < monstersWithHp.Count; ++index)
+        //    {
+        //        Console.WriteLine(monstersWithHp.Keys.ElementAt(index) + " - " + monstersWithHp.Values.ElementAt(index) + " HP");
+        //    }
+        //    Console.Write("\n");
+
+        //    for (int index = 0; index < monstersWithAttack.Count; ++index)
+        //    {
+        //        Console.WriteLine(monstersWithAttack.Keys.ElementAt(index) + " - " + monstersWithAttack.Values.ElementAt(index) + " ATT");
+        //    }
+        //    Console.Write("\n");
+
+        //    ShowMonstersOptions(monstersWithHp);
+        //}
+
+        //internal static void ShowMonstersOptions(Dictionary<string, int> monstersWithHp)
+        //{
+        //    Console.WriteLine("Press 1 to go back or 2 to filter monsters based on name");
+
+        //    int.TryParse(Console.ReadLine(), out int userOption);
+        //    switch (userOption)
+        //    {
+        //        case 1:
+        //            break;
+
+        //        case 2:
+        //            FilterMonstersByName(monstersWithHp);
+        //            break;
+
+        //        default:
+        //            Console.WriteLine("Invalid Option. Please try a valid option.");
+        //            break;
+        //    }
+        //}
+
+        //internal static void FilterMonstersByName(Dictionary<string, int> monstersWithHp)
+        //{
+        //    Console.WriteLine("Enter letters to filter monsters: ");
+        //    string? userInput = Console.ReadLine();
+
+        //    Console.Write("\n");
+
+        //    Dictionary<string, int> filteredMonstersByName = new Dictionary<string, int>();
+        //    if (!string.IsNullOrEmpty(userInput))
+        //    {
+        //        string lowerCasedUserInput = userInput.ToLower();
+        //        for (int index = 0; index < monstersWithHp.Count; ++index)
+        //        {
+        //            string currentMonsterName = monstersWithHp.Keys.ElementAt(index);
+        //            string lowerCasedCurrentMonster = currentMonsterName.ToLower();
+
+        //            if (lowerCasedCurrentMonster.Contains(lowerCasedUserInput))
+        //            {
+        //                int currentMonsterHp = monstersWithHp[currentMonsterName];
+        //                filteredMonstersByName.Add(currentMonsterName, currentMonsterHp);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("No input provided. Showing all monsters.");
+        //        Console.Write("\n");
+
+        //        for (int index = 0; index < monstersWithHp.Count; ++index)
+        //        {
+        //            Console.WriteLine(monstersWithHp.Keys.ElementAt(index));
+        //        }
+        //    }
+
+        //    if (filteredMonstersByName.Count == 0)
+        //    {
+        //        Console.WriteLine("None of the monsters starts with these letters.");
+        //        Console.Write("\n");
+        //    }
+        //    else
+        //    {
+        //        for (int index = 0; index < filteredMonstersByName.Count; ++index)
+        //        {
+        //            Console.WriteLine(filteredMonstersByName.Keys.ElementAt(index) + " - " + filteredMonstersByName.Values.ElementAt(index) + " HP");
+        //        }
+        //    }
+        //}
+        internal static void FilterMonsterClasses(List<Monster> monsters)
         {
             Console.WriteLine("Enter letters to filter monsters: ");
-            string? userInput = Console.ReadLine();
+            string input = Console.ReadLine()?.ToLower() ?? "";
 
-            Console.Write("\n");
+            Console.WriteLine();
 
-            Dictionary<string, int> filteredMonstersByName = new Dictionary<string, int>();
-            if (!string.IsNullOrEmpty(userInput))
+            List<Monster> filtered = new List<Monster>();
+
+            for (int i = 0; i < monsters.Count; i++)
             {
-                string lowerCasedUserInput = userInput.ToLower();
-                for (int index = 0; index < monstersWithHp.Count; ++index)
+                string name = monsters[i].Name.ToLower();
+                if (name.Contains(input))
                 {
-                    string currentMonsterName = monstersWithHp.Keys.ElementAt(index);
-                    string lowerCasedCurrentMonster = currentMonsterName.ToLower();
-
-                    if (lowerCasedCurrentMonster.Contains(lowerCasedUserInput))
-                    {
-                        int currentMonsterHp = monstersWithHp[currentMonsterName];
-                        filteredMonstersByName.Add(currentMonsterName, currentMonsterHp);
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("No input provided. Showing all monsters.");
-                Console.Write("\n");
-
-                for (int index = 0; index < monstersWithHp.Count; ++index)
-                {
-                    Console.WriteLine(monstersWithHp.Keys.ElementAt(index));
+                    filtered.Add(monsters[i]);
                 }
             }
 
-            if (filteredMonstersByName.Count == 0)
+            if (filtered.Count == 0)
             {
-                Console.WriteLine("None of the monsters starts with these letters.");
-                Console.Write("\n");
+                Console.WriteLine("No monsters match your filter.\n");
             }
             else
             {
-                for (int index = 0; index < filteredMonstersByName.Count; ++index)
+                for (int i = 0; i < filtered.Count; i++)
                 {
-                    Console.WriteLine(filteredMonstersByName.Keys.ElementAt(index) + " - " + filteredMonstersByName.Values.ElementAt(index) + " HP");
+                    Console.WriteLine($"{filtered[i].Name} - {filtered[i].Hp} HP - {filtered[i].Attack} ATT");
                 }
             }
         }
