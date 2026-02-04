@@ -1,6 +1,7 @@
 ﻿using GalacticQuest.Items;
 using GalacticQuest.Monsters;
 using GalacticQuest.Planets;
+using GalacticQuest.Services;
 
 namespace GalacticQuest
 {
@@ -11,12 +12,14 @@ namespace GalacticQuest
         {
             //Console.WriteLine("Hello, Galactic Quest!");
 
-            IList<Monster> monsters = new List<Monster>() { new Xenotutzi("monstrulet", 100, 20), new Ignifax("MONSTRU", 30, 30) };
+            /*IList<Monster> monsters = new List<Monster>() { new Xenotutzi("monstrulet", 100, 20), new Ignifax("MONSTRU", 30, 30) };
             foreach (var monster in monsters)
             {
                 monster.SpecialAttack();
                 Console.WriteLine($"Hp: {monster.Hp} | Attack: {monster.Attack}");
-            }
+            }*/
+            FileHandler.Instance.Write();
+            FileHandler.Instance.Read();
 
             //OpenMainMenu();
         }
